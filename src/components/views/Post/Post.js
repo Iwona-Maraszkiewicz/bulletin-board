@@ -75,9 +75,26 @@ const Component = ({ className, children, post, userStatus }) => {
                 <IconButton aria-label="share">
                   <ShareIcon />
                 </IconButton>
-                
+                {userStatus === true ? (
+                  <div className={styles.linkWrapper}>
+                    <Link
+                      to={`/post/${post.id}/edit`}
+                      variant="subtitle1"
+                      color="secondary"
+                    >
+                      <Fab className={styles.buttonEdit}
+                        size="small"
+                        color="secondary"
+                        aria-label="add"
+                        variant="extended"
+                      >
+                        Edit post
+                      </Fab>
+                    </Link>
+                  </div>
+                ) : null}
                 <Fab
-                  className={clsx(classes.expand, {
+                  className={clsx(styles.buttonMore, classes.expand, {
                     [classes.expandOpen]: expanded,
                   })}
                   onClick={handleExpandClick}
@@ -85,7 +102,7 @@ const Component = ({ className, children, post, userStatus }) => {
                   aria-label="show more"
                   variant="extended"
                   size="small"
-                  color="primary"
+                  color="secondary"
                 >
                   {' '}
                   More details
@@ -100,25 +117,7 @@ const Component = ({ className, children, post, userStatus }) => {
                   <Typography paragraph>Phone:{post.phone}</Typography>
                   <Typography>Location:{post.location}</Typography>
                 </CardContent>
-              </Collapse>
-              {userStatus === true ? (
-                <div className={styles.linkWrapper}>
-                  <Link
-                    to={`/post/${post.id}/edit`}
-                    variant="subtitle1"
-                    color="secondary"
-                  >
-                    <Fab
-                      size="small"
-                      color="secondary"
-                      aria-label="add"
-                      variant="extended"
-                    >
-                      Edit post
-                    </Fab>
-                  </Link>
-                </div>
-              ) : null}
+              </Collapse>              
             </Card>
           </Grid>
         </Grid>

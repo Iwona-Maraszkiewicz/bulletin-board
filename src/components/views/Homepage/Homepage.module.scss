@@ -29,17 +29,23 @@
         }
       }
       .linkWrapper {
-        display: flex;       
+        display: flex;  
+        .buttonMore {          
+          background-color: $color-orange;
+          &:hover {
+            filter: brightness(90%);
+          }
+        }     
         a {
           text-decoration: none;
           margin: 0 auto;
           padding-bottom: $base-size;
-  
           &:hover {
             text-decoration: none;
           }
+          
         }
-        .buttonFab {
+        .buttonEdit {
           background-color: $color-green;
           &:hover {           
             filter: brightness(90%);
@@ -47,10 +53,5 @@
         }
       }
     }
-    .buttonMore {
-      background-color: $color-orange;
-      &:hover {
-        filter: brightness(90%);
-      }
-    }
+    
   }

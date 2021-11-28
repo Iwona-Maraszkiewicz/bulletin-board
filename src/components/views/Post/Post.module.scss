@@ -2,6 +2,12 @@
 
 .root {
     .component {
+      .buttonMore {          
+        background-color: $color-orange;
+        &:hover {
+          filter: brightness(90%);
+        }
+      }
       .photoWrapper {
         height: 250px;
         position: relative;
@@ -13,15 +19,21 @@
       }
       .linkWrapper {
         display: flex;
+         
         a {
           text-decoration: none;
-          margin: 0 auto;
-          padding-bottom: $base-size;
-  
-          &:hover {
+          margin: 0 auto;     
+            &:hover {
             text-decoration: none;
           }
         }
+        .buttonEdit {
+          background-color: $color-green;
+          &:hover {           
+            filter: brightness(90%);
+          }
+        }
+       
       }
     }
   }

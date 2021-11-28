@@ -10,44 +10,19 @@ import { getStatus } from '../../../redux/usersRedux.js';
 
 import styles from './Homepage.module.scss';
 
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import PhoneIcon from '@material-ui/icons/Phone';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 
-const useStyles = makeStyles((theme) => ({
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    //transform: "rotate(180deg)",
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-}));
-
-const Component = ({ className, children, posts, userStatus }) => {
-  const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+const Component = ({ className, posts, userStatus }) => {
   return (
     <div className={clsx(className, styles.root)}>
       {userStatus === true ? (
@@ -83,59 +58,54 @@ const Component = ({ className, children, posts, userStatus }) => {
                     variant="body2"
                     color="textSecondary"
                     component="p"
+                    style={{ wordWrap: 'break-word' }}
                   >
                     {post.text}
                   </Typography>
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions>
                   <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
                   </IconButton>
                   <IconButton aria-label="phone">
                     <PhoneIcon />
                   </IconButton>
-                  <Fab 
-                    className={clsx(styles.buttonMore, classes.expand,  {
-                      [classes.expandOpen]: expanded,
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    variant="extended"
-                    size="small"
-                    color="secondary"
-                  >
-                    {' '}
-                    More details                  
-                  </Fab>
-                </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                  <CardContent>
-                    <Typography paragraph> Status: {post.status}</Typography>
-                    <Typography paragraph> Price: {post.price}</Typography>
-                    <Typography paragraph>Author:{post.author}</Typography>
-                    <Typography paragraph>Phone:{post.phone}</Typography>
-                    <Typography>Location:{post.location}</Typography>
-                  </CardContent>
-                </Collapse>
-                {userStatus === true ? (
+                 
                   <div className={styles.linkWrapper}>
                     <Link
-                      to={`/post/${post.id}/edit`}
+                      to={`/post/${post.id}/`}
                       variant="subtitle1"
                       color="secondary"
                     >
-                      <Fab className={styles.buttonFab}
+                      <Fab className={styles.buttonMore}
                         size="small"
                         color="secondary"
                         aria-label="add"
-                        variant="extended"
+                        variant="extended"                        
                       >
-                        Edit post
+                        More details
                       </Fab>
                     </Link>
                   </div>
-                ) : null}
+                  {userStatus === true ? (
+                    <div className={styles.linkWrapper}>
+                      <Link
+                        to={`/post/${post.id}/edit`}
+                        variant="subtitle1"
+                        color="secondary"
+                      >
+                        <Fab className={styles.buttonEdit}
+                          size="small"
+                          color="secondary"
+                          aria-label="add"
+                          variant="extended"
+                        >
+                          Edit post
+                        </Fab>
+                      </Link>
+                    </div>
+                  ) : null}
+                </CardActions>
               </Card>
             </Grid>
           </Grid>
