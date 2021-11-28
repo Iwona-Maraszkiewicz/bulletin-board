@@ -203,7 +203,7 @@ class Component extends React.Component {
                     <ImageUploader
                       withIcon={true}
                       buttonText="Choose image"
-                      imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                      imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
                       maxFileSize={5242880}
                       withPreview={true}
                       onChange={this.setPhoto}

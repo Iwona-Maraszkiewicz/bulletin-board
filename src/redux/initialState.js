@@ -29,6 +29,20 @@ export const initialState = {
         phone: '919999999',
         location: 'Funchal',
       },
+      {
+        id: '3',
+        author: 'user2@gmail.com',
+        created: '2021-11-28',
+        updated: '2021-11-29',
+        status: 'published',
+        title: 'New Alfa Romeo',
+        text: 'I am selling a new Alfa Romeo, perfect condition, low mileage.',
+        photo:
+          'https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?cs=srgb&dl=pexels-pixabay-210019.jpg&fm=jpg',
+        price: 5000000,
+        phone: '888888888',
+        location: 'Oslo',
+      },
       
     ],
     loading: {

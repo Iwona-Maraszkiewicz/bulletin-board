@@ -6,25 +6,33 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 //import styles from './Switcher.module.scss';
+
 import { connect } from 'react-redux';
-import { getUserStatus } from '../../../redux/userSwitcherRedux.js';
+import { getUserStatus } from '../../../redux/usersRedux.js';
 
 class Component extends React.Component {
+  state = {
+    user: {
+      active: true,
+    },
+  };
+
   handleOnChange = (event) => {
-    const { getUserStatus, user } = this.props;
+    const { getUserStatus } = this.props;
+    const { user } = this.state;
 
     if (event === 'true') {
       user.active = true;
-      getUserStatus(true);
+      getUserStatus(user);
     } else {
       user.active = false;
-      getUserStatus(false);
+      getUserStatus(user);
     }
   };
   render() {
     return (
       <FormControl>
-        <InputLabel id="user-status">User Status</InputLabel>
+        <InputLabel  id="user-status">User Status</InputLabel>
         <Select
           labelId="user-status"
           id="user-status"
@@ -49,12 +57,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getUserStatus: (status) => dispatch(getUserStatus(status)),
+  getUserStatus: (user) => dispatch(getUserStatus(user)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
+  //Component as Switcher,
   Container as Switcher,
   Component as SwitcherComponent,
 };
