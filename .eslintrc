@@ -27,6 +27,7 @@
     "react-app"
   ],
   "rules": {
+    "react/prop-types": "off",
     "indent": [
       "error",
       2,
@@ -34,7 +35,7 @@
     ],
     "linebreak-style": [
       "error",
-      "unix"
+      "windows"
     ],
     "quotes": [
       "error",
@@ -52,3 +53,4 @@
     "no-console": "off"
   }
 }
+

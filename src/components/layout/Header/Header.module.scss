@@ -1,4 +1,18 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.root {
+  .appbar {
+    margin-bottom: $base-size;
+    background-color: $color-green;
+    .toolbar {
+      justify-content: space-between;
+      .link {
+        text-decoration: none;
+        color: $color-white;
+      }
+      .login {
+        color: $color-white;
+      }
+    }
+  }
+}
