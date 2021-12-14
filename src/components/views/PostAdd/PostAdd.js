@@ -16,14 +16,13 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import ImageUploader from 'react-images-upload';
 import { connect } from 'react-redux';
-import { getStatus } from '../../../redux/usersRedux.js';
-import { addPost } from '../../../redux/postsRedux.js';
+import { getStatus } from '../../../redux/userSwitcherRedux.js';
+import { addPostRequest } from '../../../redux/postsRedux.js';
 import { NotFound } from '../NotFound/NotFound.js';
 
 class Component extends React.Component {
   state = {
     post: {
-      id: '',
       author: '',
       created: '',
       updated: '',
@@ -35,13 +34,13 @@ class Component extends React.Component {
       phone: '',
       location: '',
     },
-    error: null,
+    
   };
   setPhoto = (files) => {
     const { post } = this.state;
 
-    if (files) this.setState({ post: { ...post, photo: files[0] } });
-    else this.setState({ post: { ...post, file: null } });
+    if (files) this.setState({ post: { ...post, photo: files[0].name } });
+    else this.setState({ post: { ...post, photo: null } });
   };
 
   handleChange = (event) => {
@@ -52,19 +51,32 @@ class Component extends React.Component {
     });
   };
 
+  handlePrice = (event) => {
+    const { post } = this.state;
+
+    this.setState({
+      post: { ...post, [event.target.name]: parseInt(event.target.value) },
+    });
+  };
+
   submitForm = (e) => {
     const { post } = this.state;
     const { addNewPost } = this.props;
     e.preventDefault();
 
     let error = null;
-    const emailPattern = /\S+@\S+\.\S+/;
+    const emailPattern = new RegExp(
+      '^[a-zA-Z0-9][a-zA-Z0-9_.-]+@[a-zA-Z0-9][a-zA-Z0-9_.-]+.{1,3}[a-zA-Z]{2,4}'
+    );
 
     if (post.title.length < 10) {
       alert('The title is too short');
       error = 'text too short';
     } else if (post.text.length < 20) {
       alert('The content is too short');
+      error = 'text too short';
+    } else if (!post.status) {
+      alert('You have to choose status');
       error = 'text too short';
     } else if (!emailPattern.test(post.author)) {
       alert('Your email adress is not valid!');
@@ -73,26 +85,10 @@ class Component extends React.Component {
     if (!error ) {
       post.created = new Date().toISOString();
       post.updated = post.created;
-      post.id = Math.random().toString(36).substr(2, 5);
-
+     
       addNewPost(post);
       console.log('add', addNewPost(post));
 
-      this.setState({
-        post: {
-          id: '',
-          author: '',
-          created: '',
-          updated: '',
-          status: '',
-          title: '',
-          text: '',
-          photo: '',
-          price: '',
-          phone: '',
-          location: '',
-        },
-      });
       alert('Thank you for your add!');
     } else {
       alert('Please correct errors before submitting your add!');
@@ -164,7 +160,7 @@ class Component extends React.Component {
                       name="price"
                       label="Price"
                       variant="filled"
-                      onChange={this.handleChange}
+                      onChange={this.handlePrice}
                       helperText="Price in EUR"
                       fullWidth
                     />
@@ -191,6 +187,7 @@ class Component extends React.Component {
                         variant="filled"
                         name="status"
                         value={post.status}
+                        required
                       >
                         <MenuItem value="draft">draft</MenuItem>
                         <MenuItem value="published">published</MenuItem>
@@ -203,7 +200,7 @@ class Component extends React.Component {
                     <ImageUploader
                       withIcon={true}
                       buttonText="Choose image"
-                      imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
+                      imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg', '.jfif']}
                       maxFileSize={5242880}
                       withPreview={true}
                       onChange={this.setPhoto}
@@ -240,7 +237,8 @@ const mapStateToProps = (state) => ({
   
   
 const mapDispatchToProps = (dispatch) => ({
-  addNewPost: (post) => dispatch(addPost(post)),
+  //addNewPost: (post) => dispatch(addPost(post)),
+  addNewPost: (post) => dispatch(addPostRequest(post)),
 });
   
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

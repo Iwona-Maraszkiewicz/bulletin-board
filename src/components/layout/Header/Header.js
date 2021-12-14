@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { AUTH_URL} from '../../../config';
 import { Link } from 'react-router-dom';
 
 import clsx from 'clsx';
@@ -11,56 +12,71 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 
 import { connect } from 'react-redux';
-import { getStatus } from '../../../redux/usersRedux.js';
+import { getStatus, getUserStatus } from '../../../redux/userSwitcherRedux.js';
 
 import styles from './Header.module.scss';
 
-const Component = ({ className, children, userStatus }) => {
-  return (
-    <div className={clsx(className, styles.root)}>
-      <AppBar position="sticky" className={styles.appbar}>
-        <Container maxWidth="xl">
-          <Toolbar className={styles.toolbar}>
-            <Typography variant="h6">
-              <Link to={'/'} className={styles.link}>
+class Component extends React.Component {
+  handleOnChange = (event) => {
+    const { getUserStatus, user } = this.props;
+
+    if (event === 'true') {
+      user.active = true;
+      getUserStatus(true);
+    } else {
+      user.active = false;
+      getUserStatus(false);
+    }
+  };
+  render() {
+    const { className, userStatus } = this.props;
+    return (
+      <div className={clsx(className, styles.root)}>
+        <AppBar position="sticky" className={styles.appbar}>
+          <Container maxWidth="xl">
+            <Toolbar className={styles.toolbar}>
+              <Typography variant="h6">
+                <Link to={'/'} className={styles.link}>
                   Bulletin Board
-              </Link>
-            </Typography>
-            {userStatus === true ? (
-              <>
-                <Typography variant="h6">
-                  <Link to={'/'} className={styles.link}>
-                    LIST OF YOURS ADDS
-                  </Link>
-                </Typography>
+                </Link>
+              </Typography>
+              {userStatus === true ? (
+                <>
+                  <Typography variant="h6">
+                    <Link to={'/'} className={styles.link}>
+                      LIST OF YOURS ADDS
+                    </Link>
+                  </Typography>
+                  <Button
+                    color="inherit"
+                    variant="outlined"
+                    className={styles.login}
+                    href={`${AUTH_URL}/logout`}
+                    value="false"
+                    onClick={(event) => this.handleOnChange(event.target.value)}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
                 <Button
                   color="inherit"
                   variant="outlined"
-                  component={Link}
+                  href={`${AUTH_URL}/google`}
                   className={styles.login}
-                  to={'/'}
+                  value="true"
+                  onClick={(event) => this.handleOnChange(event.target.value)}
                 >
-                  Logout
+                  Login
                 </Button>
-              </>
-            ) : (
-              <Button
-                color="inherit"
-                variant="outlined"
-                href="https://google.com"
-                className={styles.login}
-              >
-                Login
-              </Button>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
-      
-      {children}
-    </div>
-  );
-};
+              )}
+            </Toolbar>
+          </Container>
+        </AppBar>
+      </div>
+    );
+  }
+}
 
 Component.propTypes = {
   children: PropTypes.node,
@@ -70,8 +86,12 @@ Component.propTypes = {
 
 const mapStateToProps = (state) => ({
   userStatus: getStatus(state),
+  user: state.user,
 });
-const ContainerH = connect(mapStateToProps)(Component);
+const mapDispatchToProps = (dispatch) => ({
+  getUserStatus: (user) => dispatch(getUserStatus(user)),
+});
+const ContainerH = connect(mapStateToProps, mapDispatchToProps)(Component);
 export {
   //Component as Header,
   ContainerH as Header,

@@ -1,8 +1,8 @@
 export const initialState = {
   posts: {
     data: [
-      {
-        id: '1',
+    /*  {
+        _id: '1',
         author: 'admin@onet.pl',
         created: '2021-11-11',
         updated: '2021-12-11',
@@ -16,7 +16,7 @@ export const initialState = {
         location: 'Warsaw',
       },
       {
-        id: '2',
+        _id: '2',
         author: 'user1@gmail.com',
         created: '2021-11-12',
         updated: '2021-11-13',
@@ -30,7 +30,7 @@ export const initialState = {
         location: 'Funchal',
       },
       {
-        id: '3',
+        _id: '3',
         author: 'user2@gmail.com',
         created: '2021-11-28',
         updated: '2021-11-29',
@@ -42,13 +42,16 @@ export const initialState = {
         price: 5000000,
         phone: '888888888',
         location: 'Oslo',
-      },
+      }, 
       
-    ],
+    */  ],
     loading: {
       active: false,
       error: false,
     },
+  },
+  users: {
+    data: [],
   },
   user: {
     active: true,

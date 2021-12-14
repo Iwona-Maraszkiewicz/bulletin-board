@@ -5,8 +5,12 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux.js';
-import { getStatus } from '../../../redux/usersRedux.js';
+import {
+  getAll,
+  getLoadingState,
+  fetchPublished,
+} from '../../../redux/postsRedux.js';
+import { getStatus } from '../../../redux/userSwitcherRedux.js';
 
 import styles from './Homepage.module.scss';
 
@@ -22,98 +26,132 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 
-const Component = ({ className, posts, userStatus }) => {
-  return (
-    <div className={clsx(className, styles.root)}>
-      {userStatus === true ? (
-        <div className={styles.buttonAdd}>
-          <Link to={'/post/add'} variant="subtitle1" color="secondary">
-            <Fab className={styles.buttonFab}
-              size="small"
-              color="secondary"
-              aria-label="add"
-              variant="extended"
-            >
-              Add new add
-            </Fab>
-          </Link>
-        </div>
-      ) : null}
-      {posts.map((post) => (
-        <Paper key={post.id} className={styles.component} elevation={9}>
-          <Grid container spacing={3} alignContent="center" justifyContent="center">
-            <Grid item xs={12} sm={5}>
-              <div className={styles.photoWrapper}>
-                <img src={post.photo} alt={post.title} />
-              </div>
-            </Grid>
-            <Grid item xs={12} sm={5}>
-              <Card>
-                <CardHeader
-                  title={post.title}
-                  subheader={`Publication date: ${post.created}, last update: ${post.updated}`}
-                />
-                <CardContent>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                    style={{ wordWrap: 'break-word' }}
-                  >
-                    {post.text}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton aria-label="phone">
-                    <PhoneIcon />
-                  </IconButton>
-                 
-                  <div className={styles.linkWrapper}>
-                    <Link
-                      to={`/post/${post.id}/`}
-                      variant="subtitle1"
-                      color="secondary"
-                    >
-                      <Fab className={styles.buttonMore}
-                        size="small"
-                        color="secondary"
-                        aria-label="add"
-                        variant="extended"                        
-                      >
-                        More details
-                      </Fab>
-                    </Link>
-                  </div>
-                  {userStatus === true ? (
-                    <div className={styles.linkWrapper}>
-                      <Link
-                        to={`/post/${post.id}/edit`}
-                        variant="subtitle1"
-                        color="secondary"
-                      >
-                        <Fab className={styles.buttonEdit}
-                          size="small"
-                          color="secondary"
-                          aria-label="add"
-                          variant="extended"
-                        >
-                          Edit post
-                        </Fab>
-                      </Link>
-                    </div>
-                  ) : null}
-                </CardActions>
-              </Card>
-            </Grid>
-          </Grid>
+import { Loading } from '../../common/Loading/Loading';
+import { Error } from '../../common/Error/Error';
+
+class Component extends React.Component {
+  componentDidMount() {
+    const { fetchPublishedPosts } = this.props;
+    fetchPublishedPosts();
+  }
+  render() {
+    const {
+      className,
+      posts,
+      userStatus,
+      loading: { active, error },
+    } = this.props;
+    if (active || !posts.length) {
+      return (
+        <Paper className={styles.component}>
+          <Loading />
         </Paper>
-      ))}
-    </div>
-  );
-};
+      );
+    } else if (error) {
+      return (
+        <Paper className={styles.component}>
+          <Error>{error}</Error>
+        </Paper>
+      );
+    } else {
+      return (
+        <div className={clsx(className, styles.root)}>
+          {userStatus === true ? (
+            <div className={styles.buttonAdd}>
+              <Link to={'/post/add'} variant="subtitle1" color="secondary">
+                <Fab
+                  size="small"
+                  color="secondary"
+                  aria-label="add"
+                  variant="extended"
+                >
+                  Add new add
+                </Fab>
+              </Link>
+            </div>
+          ) : null}
+          {posts.map((post) => (
+            <Paper key={post._id} className={styles.component} elevation={9}>
+              <Grid
+                container
+                spacing={3}
+                alignContent="center"
+                justify="center"
+              >
+                <Grid item xs={12} sm={5}>
+                  <div className={styles.photoWrapper}>
+                    <img src={post.photo} alt={post.title} />
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                  <Card>
+                    <CardHeader
+                      title={post.title}
+                      subheader={`Publication date: ${post.created}, last update: ${post.updated}`}
+                    />
+                    <CardContent>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                        style={{ wordWrap: 'break-word' }}
+                      >
+                        {post.text}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                      </IconButton>
+                      <IconButton aria-label="phone">
+                        <PhoneIcon />
+                      </IconButton>
+                      <div className={styles.linkWrapper}>
+                        <Link
+                          to={`/post/${post._id}/`}
+                          variant="subtitle1"
+                          color="secondary"                          
+                        >
+                          <Fab
+                            variant="extended"
+                            size="small"
+                            color="primary"
+                            className={styles.fab}
+                          >
+                            More details
+                          </Fab>
+                        </Link>
+                      </div>
+
+                      {userStatus === true ? (
+                        <div className={styles.linkWrapper}>
+                          <Link
+                            to={`/post/${post._id}/edit`}
+                            variant="subtitle1"
+                            color="secondary"
+                          >
+                            <Fab
+                              size="small"
+                              color="secondary"
+                              aria-label="add"
+                              variant="extended"
+                            >
+                              Edit post
+                            </Fab>
+                          </Link>
+                        </div>
+                      ) : null}
+                    </CardActions>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Paper>
+          ))}
+        </div>
+      );
+    }
+  }
+}
 
 Component.propTypes = {
   children: PropTypes.node,
@@ -124,20 +162,14 @@ Component.propTypes = {
 const mapStateToProps = (state) => ({
   posts: getAll(state),
   userStatus: getStatus(state),
+  loading: getLoadingState(state),
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  fetchPublishedPosts: () => dispatch(fetchPublished()),
+});
 
-
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
-
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-const Container = connect(mapStateToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 export {
   //Component as Homepage,
   Container as Homepage,
