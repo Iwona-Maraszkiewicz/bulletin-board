@@ -39,7 +39,7 @@ class Component extends React.Component {
   setPhoto = (files) => {
     const { post } = this.state;
 
-    if (files) this.setState({ post: { ...post, photo: files[0].name } });
+    if (files) this.setState({ post: { ...post, photo: files[0] } });
     else this.setState({ post: { ...post, photo: null } });
   };
 
@@ -86,10 +86,27 @@ class Component extends React.Component {
       post.created = new Date().toISOString();
       post.updated = post.created;
      
-      addNewPost(post);
-      console.log('add', addNewPost(post));
+      const formData = new FormData();
+      for (let key of [
+        "author",
+        "created",
+        "updated",
+        "status",
+        "title",
+        "text",
+        "price",
+        "phone",
+        "location",
+        "photo",
+      ]) {
+        formData.append(key, post[key]);
+      }
+
+      addNewPost(formData);
+      console.log(formData);
 
       alert('Thank you for your add!');
+      window.location = "/";
     } else {
       alert('Please correct errors before submitting your add!');
     }
@@ -102,7 +119,7 @@ class Component extends React.Component {
         {userStatus === true ? (
           <Grid container align="center" justify="center">
             <Grid item align="center" xs={12} sm={9}>
-              <Paper>
+              <Paper className={styles.form}>
                 <form onSubmit={this.submitForm}>
                   <Typography variant="h6">
                     Fill the fields to add an announcement

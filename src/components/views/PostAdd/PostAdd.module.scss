@@ -7,4 +7,8 @@
             filter: brightness(110%);
           }
      }
+     .form {
+        padding: $base-size * 2 0;
+        color: $color-text-dark;
+      }
  }

@@ -2,6 +2,7 @@
 
 .root {
     .component {
+      padding: $base-size;
       .buttonMore {          
         background-color: $color-orange;
         &:hover {
@@ -9,7 +10,7 @@
         }
       }
       .photoWrapper {
-        height: 300px;
+        height: 50vh;
         position: relative;
         img {
           width: 100%;
@@ -17,15 +18,24 @@
           object-fit: cover;
         }
       }
-      .linkWrapper {
-        display: flex;
-         
-        a {
-          text-decoration: none;
-          margin: 0 auto;     
+      .actions {
+        display: flex;        
+        align-items: center;
+        justify-content: space-around;
+        padding: $base-size;
+
+        .linkWrapper {
+          display: flex;
+          a {
+            text-decoration: none;
+            margin: 0 auto;
             &:hover {
             text-decoration: none;
+            }
           }
+        }
+        .fab {
+          color: $color-white;
         }
         .buttonEdit {
           background-color: $color-green;
@@ -33,7 +43,24 @@
             filter: brightness(90%);
           }
         }
-       
+        .card {
+          color: $color-background-dark;
+          padding: $base-size;
+    
+          &__header {
+            text-align: center;
+            padding: $base-size 0;
+          }
+          &__content {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            .text {
+              text-align: justify;
+              padding-bottom: $base-size;
+            }
+          }
       }
     }
   }
+}

@@ -6,11 +6,12 @@ const passport = require("passport");
 const session = require("express-session");
 const passportSetup = require("./config/passport");
 
+const app = express();
+
 const postsRoutes = require("./routes/posts.routes");
 const usersRoutes = require("./routes/users.routes");
 const authRoutes = require("./routes/auth.routes");
 
-const app = express();
 /* INIT SESSION MECHANISM */
 app.use(session({ secret: "anything" }));
 /* INIT PASSPORT */
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 
 /* API ENDPOINTS */
 app.use("/api", postsRoutes);
-app.use("/api", usersRoutes);
+app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 
 /* API ERROR PAGES */
@@ -32,11 +33,12 @@ app.use("/api", (req, res) => {
 });
 /* REACT WEBSITE */
 app.use(express.static(path.join(__dirname, "../build")));
+app.use("/public/uploads", express.static(__dirname + "/public/uploads/"));
 app.use("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../build/index.html"));
 });
 /* MONGOOSE */
-mongoose.connect("mongodb://localhost:27017/bulletinBoard", {
+mongoose.connect("mongodb+srv://Iwona:Ik221021@cluster0.h83dy.mongodb.net/bulletinBoard?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

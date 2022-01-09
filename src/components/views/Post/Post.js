@@ -1,33 +1,45 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+//import React from "react";
+import React, { useEffect } from 'react';
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-import clsx from 'clsx';
+import clsx from "clsx";
 
-import { connect } from 'react-redux';
-import { getOne, fetchOnePostFromAPI } from '../../../redux/postsRedux.js';
-import { getStatus } from '../../../redux/userSwitcherRedux.js';
+import { connect } from "react-redux";
+import { getOne, fetchOnePostFromAPI } from "../../../redux/postsRedux.js";
+import { getStatus } from "../../../redux/userSwitcherRedux.js";
 
-import styles from './Post.module.scss';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
+import styles from "./Post.module.scss";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Fab from "@material-ui/core/Fab";
+
 
 class Component extends React.Component {
-  componentDidMount() {
+
+componentDidMount() {
     const { fetchPost } = this.props;
     fetchPost();
-  }
+    console.log('componentDidMount post');
+    }
+    /*
+    componentDidUpdate() {
+    const { fetchPost } = this.props;
+    fetchPost();
+    console.log('componentDidUpdate post');
+    }
+    */
   render() {
     const { className, post, userStatus } = this.props;
+console.log('render post ',this.props);
     return (
       <div className={clsx(className, styles.root)}>
         <Paper className={styles.component} elevation={9}>
@@ -36,7 +48,7 @@ class Component extends React.Component {
               <div className={styles.photoWrapper}>
                 <img src={post.photo} alt={post.title} />
               </div>
-              <CardActions>
+              <CardActions className={styles.actions}>
                 <IconButton aria-label="add to favorites">
                   <FavoriteIcon />
                 </IconButton>
@@ -63,27 +75,44 @@ class Component extends React.Component {
                 ) : null}
               </CardActions>
             </Grid>
-            <Grid item xs={12} sm={5}>
-              <Card>
+            <Grid item xs={12} sm={7}>
+              <Card className={styles.card}>
                 <CardHeader
                   title={post.title}
-                  subheader={`Publication date: ${post.created}, last update: ${post.updated}`}
+                  className={styles.card__header}
+                  subheader={`Publication date: ${post.created},last update: ${post.updated}`}
                 />
-                <CardContent>
+                <CardContent className={styles.card__content}>
                   <Typography
                     variant="body2"
                     color="textSecondary"
                     component="p"
+                    className={styles.text}
                   >
                     {post.text}
                   </Typography>
-                </CardContent>
-                <CardContent>
-                  <Typography paragraph> Status: {post.status}</Typography>
-                  <Typography paragraph> Price: {post.price}</Typography>
-                  <Typography paragraph>Author:{post.author}</Typography>
-                  <Typography paragraph>Phone:{post.phone}</Typography>
-                  <Typography paragraph>Location:{post.location}</Typography>
+                  <Typography paragraph>
+                    {" "}
+                    <b>Status: </b>
+                    {post.status}
+                  </Typography>
+                  <Typography paragraph>
+                    {" "}
+                    <b>Price: </b>
+                    {post.price} EUR
+                  </Typography>
+                  <Typography paragraph>
+                    <b>Author: </b>
+                    {post.author}
+                  </Typography>
+                  <Typography paragraph>
+                    <b>Phone: </b>
+                    {post.phone}
+                  </Typography>
+                  <Typography paragraph>
+                    <b>Location: </b>
+                    {post.location}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
@@ -96,6 +125,7 @@ class Component extends React.Component {
 
 Component.propTypes = {
   className: PropTypes.string,
+  fetchPost: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
@@ -108,8 +138,4 @@ const mapDispatchToProps = (dispatch, props) => ({
 });
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
-export {
-  //Component as Post,
-  Container as Post,
-  Component as PostComponent,
-};
+export { Container as Post, Component as PostComponent };

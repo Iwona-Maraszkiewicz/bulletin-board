@@ -43,8 +43,8 @@ class Component extends React.Component {
               {userStatus === true ? (
                 <>
                   <Typography variant="h6">
-                    <Link to={'/'} className={styles.link}>
-                      LIST OF YOURS ADDS
+                  <Link to={"/youradds"} className={styles.link}>
+                    SEE YOUR ADDS
                     </Link>
                   </Typography>
                   <Button
