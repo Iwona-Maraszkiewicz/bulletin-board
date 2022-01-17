@@ -68,7 +68,7 @@ const Component = ({
                     variant="extended"
                     size="small"
                     color="primary"
-                    className={styles.fab}
+                    className={styles.more}
                   >
                     More details
                   </Fab>
@@ -87,7 +87,7 @@ const Component = ({
                       color="secondary"
                       aria-label="add"
                       variant="extended"
-                      className={styles.fab}
+                      className={styles.edit}
                     >
                       <span>Edit post</span>
                     </Fab>

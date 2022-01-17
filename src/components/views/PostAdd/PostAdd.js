@@ -226,7 +226,7 @@ class Component extends React.Component {
                     />
                   </Grid>
                   <Grid item xs={12} sm={9} align="center">
-                    <Button className={styles.submit} variant="contained" type="submit">
+                    <Button className={styles.submit} variant="contained" type="submit" color="secondary">
                       Submit
                     </Button>
                   </Grid>

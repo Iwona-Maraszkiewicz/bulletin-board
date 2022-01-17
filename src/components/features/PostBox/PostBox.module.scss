@@ -28,13 +28,22 @@
       flex-wrap: wrap;
       a {
         text-decoration: none;
-        margin: 0 auto;
-
-        &:hover {
-          text-decoration: none;
-        }
-        .fab {
+        margin: 0 auto;        
+        .more {
           color: $color-white;
+          background-color: $color-green;
+          &:hover {
+            text-decoration: none;
+            filter: brightness(90%);
+          }
+        }
+        .edit {
+          color: $color-white;
+          background-color: $color-orange;
+          &:hover {
+            text-decoration: none;
+            filter: brightness(90%);
+          }
         }
       }
     }

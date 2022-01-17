@@ -67,6 +67,7 @@ console.log('render post ',this.props);
                         color="secondary"
                         aria-label="add"
                         variant="extended"
+                        className={styles.buttonEdit}
                       >
                         Edit post
                       </Fab>

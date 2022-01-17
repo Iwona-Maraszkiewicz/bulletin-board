@@ -61,7 +61,7 @@ class Component extends React.Component {
           {userStatus === true ? (
             <div className={styles.buttonAdd}>
               <Link to={"/post/add"} variant="subtitle1" color="secondary">
-                <Fab
+                <Fab className={styles.buttonFab}
                   size="small"
                   color="secondary"
                   aria-label="add"
